@@ -15,34 +15,42 @@ node *newNode(int key)
     return temp;
 }
 
-void splitList(node *head,node **head1,node **head2){
-    node *slow=head,*fast=head;
+void splitList(node *head, node **head1, node **head2)
+{
+    node *slow = head, *fast = head;
     *head1 = head;
-    if(head==NULL || head->next==NULL)
-    return;
+    if (head == NULL || head->next == NULL)
+        return;
 
-    while(fast->next!=head && fast->next->next!=head){
-        fast=fast->next->next;
-        slow=slow->next;
+    while (fast->next != head && fast->next->next != head)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
     }
 
     *head2 = slow->next;
-    slow->next=head;
+    slow->next = head;
 
-    if(fast->next->next==head){
-        fast->next->next=*head2;
+    if (fast->next->next == head)
+    {
+        fast->next->next = *head2;
     }
-    else{
-        fast->next=*head2;
+    else
+    {
+        fast->next = *head2;
     }
 }
 
 void display(node *head)
 {
-    while (head != NULL)
+    node *temp = head;
+    if (head != NULL)
     {
-        cout << head->data<<"->";
-        head = head->next;
+        do
+        {
+            cout << temp->data << "->";
+            temp = temp->next;
+        } while (temp != head);
     }
     cout << endl;
 }
@@ -55,10 +63,10 @@ int main()
     head->next->next->next = newNode(9);
     head->next->next->next->next = newNode(8);
     head->next->next->next->next->next = newNode(2);
-    head->next->next->next->next->next->next=head;
+    head->next->next->next->next->next->next = head;
 
-    node *head2 = NULL,*head1 = NULL;
-    splitList(head,&head1,&head2);
+    node *head2 = NULL, *head1 = NULL;
+    splitList(head, &head1, &head2);
     display(head1);
     display(head2);
     return 0;
