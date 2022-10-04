@@ -1,4 +1,5 @@
 #include <iostream>
+#include<unordered_set>
 using namespace std;
 
 struct node
@@ -26,17 +27,24 @@ void display(node *head)
 }
 
 node *removeDuplicate1(node *head){
-    if(head==NULL || head->next==NULL)
-    return head;
+    if(!head) return head;
 
-    node *temp=head;
+    unordered_set<int> s;
+    node *temp1 = head,*temp2=head->next;
 
-    while(temp->next!=NULL){
-        if(temp->data==temp->next->data){
-            temp->next=temp->next->next;
+    while(temp2){
+        s.insert(temp1->data);
+
+        if(s.find(temp2->data)!=s.end()){   //temp1=temp2
+            node *del = temp2;
+            temp2=temp2->next;
+            temp1->next = temp2;
+            delete del;
         }
-        else
-        temp=temp->next;
+        else{
+            temp1=temp1->next;
+            temp2=temp2->next;
+        }
     }
     return head;
 }
