@@ -3,6 +3,8 @@
 #include<algorithm>
 using namespace std;
 
+
+//time : O(n*n), space : O(n)
 int findMedian(vector<vector<int>>&nums){
     int m = nums.size(),n = nums[0].size();
 
@@ -14,6 +16,7 @@ int findMedian(vector<vector<int>>&nums){
             helper.push_back(temp[j]);
         }
     }
+    
     sort(helper.begin(),helper.end());
     int median;
     if(helper.size()%2==0){
