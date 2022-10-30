@@ -42,10 +42,12 @@ bool bst :: isPresent(bst *root,int key){
     if(root->data==key)
     return true;
 
-    if(key<root->data)
-    return isPresent(root->left,key);
+    bool res1 = isPresent(root->left,key);
+    if(res1)
+    return true;
 
-    return isPresent(root->right,key);
+    bool res2 = isPresent(root->right,key);
+    return res2;
 }
 
 int main()

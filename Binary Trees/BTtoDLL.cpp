@@ -48,7 +48,7 @@ int main()
     root->right = new tree(15);
     root->left->left = new tree(25);
     root->left->right = new tree(30);
-    root->right->left = new tree(36);
+    root->right->left = new tree(36); 
     tree *head = nullptr;
     BTtoDLL(root,head);
     print(head);

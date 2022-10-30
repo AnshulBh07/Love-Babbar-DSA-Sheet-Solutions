@@ -33,15 +33,15 @@ node* addOne(node *head){
     node *newHead;
 
     int carry = 1;
-    int x;
+    int sum;
     while(curr && carry){
-        x = curr->data;
-        x+=1;
-        carry = x/10;
+        sum = curr->data;
+        sum+=1;
+        carry = sum/10;
         if(carry){
-            x = x%10;
+            sum = sum%10;
         }
-        curr->data = x;
+        curr->data = sum;
         prev = curr;
         curr = curr->next;
     }
@@ -71,7 +71,7 @@ int main()
     head->next = new node(5);
     head->next->next = new node(9);
 
-    addOne(head);
-    display(head);
+    node *newhead = addOne(head);
+    display(newhead);
     return 0;
 }

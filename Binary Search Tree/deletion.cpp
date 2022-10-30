@@ -15,7 +15,7 @@ class bst{
 
     bst *insert(bst *root,int data);
     bst *deleteNode(bst *root,int val);
-    int minValue(bst* root);
+    bst *minValue(bst* root);
 };
 
 bst* bst :: insert(bst *root,int data){
@@ -23,9 +23,9 @@ bst* bst :: insert(bst *root,int data){
     return new bst(data);
 
     if(data<root->data)
-    return insert(root->left,data);
-    else if(data<root->data)
-    return insert(root->right,data);
+    root->left = insert(root->left,data);
+    else if(data>root->data)
+    root->right = insert(root->right,data);
 
     return root;
 }
@@ -40,41 +40,53 @@ we know that the inorder traversal of a bst gives a sorted array, i.e. we can re
 inordere predecessor or inorder successor. Lets just use successor */
 
 //function to find inorder successor 
-int bst :: minValue(bst *root){
-    int minv = root->data;
-    while(root->left!=nullptr){
-        minv = root->left->data;
-        root=root->left;
+bst *bst :: minValue(bst *root){
+    bst *currnode = root;
+
+    while(currnode && currnode->left!=nullptr){
+        currnode=currnode->left;
     }
-    return minv;
+    return currnode;
 }
 
 bst* bst :: deleteNode(bst *root,int val){
     if(!root)
     return root;
 
-    if(val<root->data)
-    root->left = deleteNode(root->left,val);
-    else if(val>root->data)
+    if(root->data<val)
     root->right = deleteNode(root->right,val);
 
+    else if(root->data>val)
+    root->left = deleteNode(root->left,val);
+
     else{
-        if(root->left==nullptr)
-        return root->right;
+        //the node is to be deleted has no child
+        if(!root->left && !root->right){
+            return nullptr;
+        }
 
-        else if(root->right == nullptr)
-        return root->left;
+        //if the node to be deleted has one child
+        else if(!root->left){
+            bst *temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if(!root->right){
+            bst *temp = root->left;
+            free(root);
+            return temp;
+        }
 
-        root->data = minValue(root->right);
-
-        root->right = deleteNode(root->right,root->data);
+        //if the node has two children
+        bst *temp = minValue(root->right);
+        root->data = temp->data;
+        root->right = deleteNode(root->right,temp->data);
     }
-
     return root;
 }
 
 void inOrder(bst *root){
-    if(root==nullptr)
+    if(!root)
     return;
 
     inOrder(root->left);
@@ -93,9 +105,11 @@ int main()
     b.insert(root, 60);
     b.insert(root, 80);
 
+    cout<<"Inorder traversal before deeltion : ";
     inOrder(root);
     cout<<endl;
-    b.deleteNode(root,20);
+    root = b.deleteNode(root,20);
+    cout<<"Inorder traversal after deletion : ";
     inOrder(root);
     return 0;
 }
