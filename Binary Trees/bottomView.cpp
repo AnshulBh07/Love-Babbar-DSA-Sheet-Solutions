@@ -62,6 +62,13 @@ int main()
     root->right->left = new tree(4);
     root->right->right = new tree(25);
 
+                        /*20
+                         / \
+                        8  22
+                       / \ / \
+                      5  3 10 14
+                    /\
+                   4 25*/
     bottomView1(root);
     return 0;
 }

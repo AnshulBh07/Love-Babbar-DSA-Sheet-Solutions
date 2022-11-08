@@ -4,19 +4,19 @@
 using namespace std;
 
 int uniqueMorseCode(vector<string>&words){
-    vector<string> a = {".-","-...","-.-.","-..",".","..-.","--.","....",
+    vector<string> dictionary = {".-","-...","-.-.","-..",".","..-.","--.","....",
                   "..",".---","-.-",".-..","--","-.","---",".--.",
                   "--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
 
-  	unordered_set<string> u;
+  	unordered_set<string> s;
 
   	for (auto word : words) {
   		string t;
-  		for (auto c : word) t += a[c - 'a'];
-  		u.insert (t);
+  		for (auto c : word) t += dictionary[c - 'a'];
+  		s.insert (t);
   	 }
 
-  return u.size ();
+  return s.size ();
 }
 
 int main()

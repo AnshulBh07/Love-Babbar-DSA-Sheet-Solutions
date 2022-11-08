@@ -13,9 +13,6 @@ string Decode(string key, string message){
     for(auto x:mp){
         cout<<x.second<<" ";
     }
-    cout<<endl;
-    for(auto x:mp)
-    cout<<x.first<<" ";
 }
 
 int main()
