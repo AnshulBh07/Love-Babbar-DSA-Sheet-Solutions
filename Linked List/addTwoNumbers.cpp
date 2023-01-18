@@ -1,123 +1,90 @@
-#include <iostream>
+//Space Complexity : O(max(m,n))
+//Time Complexity : O(max(m,n))
+#include<iostream>
 using namespace std;
 
-struct node
-{
+struct node{
     int data;
     node *next;
 
-    node(int data)
-    {
+    node(int data){
         this->data = data;
         this->next = nullptr;
     }
 };
 
-node *insertAtEnd(node *head, int data)
-{
-    if (!head)
-        return new node(data);
+//function to reverse a list
+node *reverseList(node *head){
+    if(!head)   return head;
 
-    node *temp = head;
-    while (temp->next)
-    {
-        temp = temp->next;
-    }
+    node *curr = head;
+    node *prev = nullptr,*after = nullptr;
 
-    temp->next = new node(data);
-
-    return head;
-}
-
-node *reverseList(node *head)
-{
-    if (!head)
-        return head;
-
-    node *curr = head, *prev = nullptr, *after = nullptr;
-    while (curr)
-    {
+    while(curr){
         after = curr->next;
         curr->next = prev;
         prev = curr;
         curr = after;
     }
-    return prev;
+    return head;
 }
 
-node *addTwoNumbers(node *head1, node *head2)
-{
-    if (!head1)
-        return head2;
-    if (!head2)
-        return head1;
+//add both the lists and store it in a third list
+node *addBothLists(node *l1,node *l2){
+    if(!l1) return l2;
+    if(!l2) return l1;
 
-    node *newhead1 = reverseList(head1);
-    node *newhead2 = reverseList(head2);
-    node *head3;
+    node *head1 = reverseList(l1);
+    node *head2 = reverseList(l2);
 
-    node *temp1 = newhead1, *temp2 = newhead2;
-    int carry = 0, x;
-    while (temp1 || temp2)
-    {
-        x = temp1->data + temp2->data + carry;
-        carry = x / 10;
-        if (carry)
-        {
-            x = x % 10;
+    node *dummy = new node(-1);
+    node *temp = dummy;
+
+    int carry = 0;
+
+    while(head1 || head2 || carry==1){
+        int sum = 0;
+        if(!head1){
+            sum+=head1->data;
+            head1=head1->next;
         }
-        head3 = insertAtEnd(head3, x);
-        temp1 = temp1->next;
-        temp2 = temp2->next;
+        if(!head2){
+            sum+=head2->data;
+            head2=head2->next;
+        }
+
+        sum+=carry;
+        carry = sum/10;
+        temp->next = new node(sum%10);
+        temp=temp->next;
     }
-    if (temp1)
-    {
-        while (temp1 && carry)
-        {
-            x = temp1->data;
-            x += 1;
-            carry = x / 10;
-            if (carry)
-            {
-                x = x % 10;
-            }
-            head3 = insertAtEnd(head3, x);
-            temp1 = temp1->next;
-        }
-        // in case of a carry existing even after the complete list has been traversed e.g. 999
-        if (carry)
-        {
-            head3 = insertAtEnd(head3, carry);
-        }
-    }
-    if(temp2){
-        while (temp2 && carry)
-        {
-            x = temp2->data;
-            x += 1;
-            carry = x / 10;
-            if (carry)
-            {
-                x = x % 10;
-            }
-            head3 = insertAtEnd(head3, x);
-            temp2 = temp2->next;
-        }
-        // in case of a carry existing even after the complete list has been traversed e.g. 999
-        if (carry)
-        {
-            head3 = insertAtEnd(head3, carry);
-        }
-    }
+
+    node *ans = reverseList(dummy->next);
+    return ans;
 }
 
-int main()
-{
-    node *head1 = new node(1);
-    head1->next = new node(9);
-    head1->next->next = new node(0);
+void print(node *head){
+    if(!head)   return;
 
-    node *head2 = new node(2);
-    head2->next = new node(5);
+    node *temp = head;
+
+    while(temp){
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+}   
+
+int main(){
+    node *l1 = new node(3);
+    l1->next = new node(4);
+    l1->next->next = new node(2);
+
+    node *l2 = new node(4);
+    l2->next = new node(6);
+    l2->next->next = new node(5);
+
+    node *ans = addBothLists(l1,l2);
+
+    print(ans);
     return 0;
 }

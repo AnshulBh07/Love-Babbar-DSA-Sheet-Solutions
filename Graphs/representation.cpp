@@ -2,8 +2,8 @@
 //There are two major representations 
 //1. Adjacency matrix - here all operations are performed in O(n^2) where n is the number of vertices
 //2. Adjacency list - making an array where each element represents the list of connected edges and 
-//the index represnets the vertex (1-indexed preferred). It can be implemented using maps. Time complexity is 
-//O(|V|+|E|) if V and E are same then = O(n+n) = O(n)
+//the index represnets the vertex (1-indexed preferred). It can be implemented using maps and vector arrays. 
+//Time complexity is O(|V|+|E|) if V and E are same then = O(n+n) = O(n)
 #include<iostream>
 #include<vector>
 using namespace std;
@@ -21,6 +21,7 @@ vector<int>* makeList(int n,int m){
         //u ---> v
         adj[u].push_back(v);
         //do below in case of undirected graph only
+        //v ---> u
         adj[v].push_back(u);
     }
 

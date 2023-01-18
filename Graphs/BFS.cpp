@@ -1,54 +1,60 @@
+//Space Complexity : O(3N) ~~ O(N)
+//Time Complexity - There is a queue which runs once for each node and then there's a for loop inside
+//while which runs for the given node to get all the degrees (neighbours) therefore time complexity
+//will be Time for queue traversal + Time taken for total number of degrees traversal{O(2E)}
+//i.e. Time Complecity = O(N or V) + O(2E) simplifying it more we get O(V) + O(E)
+//if V=E the it is O(E) or O(V)  
 #include<iostream>
-#include<vector>
 #include<queue>
+#include<vector>
 using namespace std;
 
-vector<int> printBFS(int V,vector<int> adj[]){
-    vector<int> bfs; //maintains the bfs traversal
-    vector<bool> vis(V,false); //vector of size V with all false to keep track of visited nodes
-
+void BFS(int V,int E,vector<int> adj[]){
     queue<int> q;
-    vis[0] = true;
+    int visited[V]{0};
+
     q.push(0);
+    visited[0] = 1;
 
     while(!q.empty()){
         int node = q.front();
         q.pop();
-        bfs.push_back(node);
+        cout<<node<<"->";
 
-        //exploring adjacency list of the node, if a new node encountered push in queue
-        for(auto it:adj[node]){
-            if(!vis[it]){
-                vis[it] = true;
-                q.push(it);
+        //what are your neighbour node?
+        for(auto x :adj[node]){
+            if(visited[x]!=1){
+                q.push(x);
+                visited[x]=1;
             }
         }
     }
-    return bfs;
 }
 
-int main()
-{
-    //creating a graph
-    int V,E;
+int main(){
+    int V,E; //number of vertices and edges
     cin>>V>>E;
 
-    vector<int> adj[V]; //in case of a 0 indexed graph size of array is V
+    vector<int> adj[V]; //used as a hashmap to store the ajdaceny list/vector for each vertex(index)
+    //size V for 0 indexed and V+1 for 1 indexed 
 
     for(int i=0;i<E;i++){
-        //taking the vectices/nodes for each edge
-        int u,v;
-        cin>>u>>v;
+        int u,v; //start and end vertex for an edge 
+        cin>>v>>u;
 
-        //creating an edge
         adj[u].push_back(v);
-        //adj[v].push_back(u);
+        adj[v].push_back(u);
     }
 
-    vector<int> ans = printBFS(V,adj);
+    for(int i=0;i<V;i++){
+        cout<<"Adjacency list of vertex "<<i<<" is : {";
+        for(auto it:adj[i]){
+            cout<<it<<",";
+        }
+        cout<<"}";
+        cout<<endl;
+    }
 
-    for(auto x:ans)
-    cout<<x<<" ";
-
+    BFS(V,E,adj);
     return 0;
 }
