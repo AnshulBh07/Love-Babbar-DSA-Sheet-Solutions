@@ -2,50 +2,39 @@
 #include<vector>
 using namespace std;
 
-//function for dfs traversal
-void doDFS(int node, vector<int> adj[],vector<int>&visited){
-    //this has to be done always
-    visited[node] = 1;
-    cout<<node<<"->";
+struct tree{
+    int val;
+    tree *left,*right;
 
-    //what are your neighbours?
-    for(auto x:adj[node]){
-        if(visited[x]!=1)
-            doDFS(x,adj,visited);
+    tree(int val){
+        this->val = val;
+        this->left = this->right = nullptr;
     }
-}
+};
 
-//functon for initial configuration
-void initDFS(int V,int E, vector<int> adj[]){
-    vector<int> visited(V+1,0);
-    visited[1] = 1;
+void inorder(tree *root,vector<int>&store){
+    if(!root){
+        return;
+    }
 
-    doDFS(1,adj,visited);
+    inorder(root->left,store);
+    store.push_back(root->val);
+    inorder(root->right,store);
 }
 
 int main(){
-    int V,E;
-    cin>>V>>E;
+    tree *root = new tree(2);
+    root->left = new tree(1);
+    root->right = new tree(3);
+    root->left->right = new tree(4);
+    root->right->right = new tree(7);
 
-    vector<int> adj[V+1]; //1 based indexing
+    vector<int> store;
 
-    for(int i=0;i<E;i++){
-        int u,v; //starting and ending vertex of edge 
-        cin>>u>>v;
+    inorder(root,store);
 
-        adj[u].push_back(v);
-        adj[v].push_back(u);
+    for(int i=0;i<store.size();i++){
+        cout<<store[i]<<"->";
     }
-
-    for(int i=1;i<=V;i++){
-        cout<<"Adjacency list of vertex "<<i<<" is : {";
-        for(auto it:adj[i]){
-            cout<<it<<",";
-        }
-        cout<<"}";
-        cout<<endl;
-    }
-
-    initDFS(V,E,adj);
     return 0;
 }
